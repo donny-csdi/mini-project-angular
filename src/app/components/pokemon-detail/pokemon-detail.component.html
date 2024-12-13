@@ -1,0 +1,44 @@
+<div class="pokemon-detail-container">
+  <div class="pokemon-card" *ngIf="pokemon">
+    <div class="pokemon-header">
+      <h1>{{ pokemon.name | titlecase }}</h1>
+      <p class="pokemon-number">#{{ pokemon.id }}</p>
+    </div>
+
+    <div class="pokemon-main-info">
+      <div class="pokemon-image">
+        <img [src]="pokemon.sprites.front_default" [alt]="pokemon.name">
+      </div>
+      <div class="pokemon-stats">
+        <div class="stat-item">
+          <span class="stat-label">Height:</span>
+          <span class="stat-value">{{ pokemon.height / 10 }} m</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Weight:</span>
+          <span class="stat-value">{{ pokemon.weight / 10 }} kg</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pokemon-types">
+      <span class="type-badge" *ngFor="let type of pokemon.types" [class]="type.type.name">
+        {{ type.type.name | titlecase }}
+      </span>
+    </div>
+
+    <div class="stats-section">
+      <h2>Base Stats</h2>
+      <div class="stat-bar" *ngFor="let stat of pokemon.stats">
+        <span class="stat-name">{{ stat.stat.name | titlecase }}</span>
+        <div class="stat-bar-container">
+          <div class="stat-bar-fill" [style.width.%]="(stat.base_stat / 255) * 100">
+            <span class="stat-value-bar">{{ stat.base_stat }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="back-button" (click)="goBack()">Back to List</button>
+</div>
