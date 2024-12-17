@@ -1,0 +1,33 @@
+<div class="biodata-container">
+    <div class="biodata-card">
+      <div class="profile-image">
+        <img [src]="cvData.image" [alt]="cvData.name">
+      </div>
+      <div class="biodata-info">
+        <h2 class="name">{{ cvData.name }}</h2>
+        <p class="description">I am a Frontend Developer who loves Angular and interested in Web Development.</p>
+        
+        <div class="info-section">
+          <div class="info-item">
+            <span class="label">Age:</span>
+            <span class="value">{{ cvData.age }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Phone:</span>
+            <span class="value">{{ cvData.contacts.phone }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Email:</span>
+            <span class="value">{{ cvData.contacts.email }}</span>
+          </div>
+        </div>
+  
+        <div class="tech-stack">
+          <h3>Tech Stack</h3>
+          <div class="tech-tags">
+            <span class="tech-tag" *ngFor="let tech of cvData.techStack">{{ tech }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

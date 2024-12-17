@@ -1,5 +1,5 @@
 <div class="pokemon-detail-container">
-  <div class="pokemon-card" *ngIf="pokemon">
+  <div class="pokemon-card" *ngIf="pokemon && listOfEvolvedPokemon">
     <div class="pokemon-header">
       <h1>{{ pokemon.name | titlecase }}</h1>
       <p class="pokemon-number">#{{ pokemon.id }}</p>
@@ -17,6 +17,11 @@
         <div class="stat-item">
           <span class="stat-label">Weight:</span>
           <span class="stat-value">{{ pokemon.weight / 10 }} kg</span>
+        </div>
+        <div class="stat-item">
+          <button class="cries-button" (click)="playCry()">
+            Hear Cry
+          </button>
         </div>
       </div>
     </div>
@@ -38,7 +43,38 @@
         </div>
       </div>
     </div>
-  </div>
 
-  <button class="back-button" (click)="goBack()">Back to List</button>
+    <div class="evolution">
+      <h2>Evolution Chain</h2>
+      <div class="evolution-chain">
+        <button (click)="devolvePokemon()" [disabled]="isDevolvedDisable" class="evolution-button devolve-button">
+          ← Devolve
+        </button>
+        <div class="evolution-list">
+          <div *ngFor="let pokemonName of evolutionList; let i = index" 
+               class="evolution-item"
+               [class.current]="i === currentEvolutionIndex">
+            {{ pokemonName | titlecase }}
+          </div>
+        </div>
+        <button (click)="evolvePokemon()" [disabled]="isEvolvedDisable" class="evolution-button evolve-button">
+          Evolve →
+        </button>
+      </div>
+    </div>
+
+    <div class="pokemon-buy-button-wrapper">
+      <button class="buy-button" (click)="togglePurchaseForm()">Buy Card</button>
+    </div>
+  </div>
 </div>
+
+<app-pokemon-form-submission
+  *ngIf="pokemon"
+  [pokemon]="pokemon"
+  [evolutions]="evolutions"
+  [isOpen]="showPurchaseForm"
+  (closeModal)="togglePurchaseForm()">
+</app-pokemon-form-submission>
+
+<button class="back-button" (click)="goBack()">Back to List</button>

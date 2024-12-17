@@ -29,7 +29,8 @@
     <div 
       class="pokemon-card" 
       *ngFor="let pokemon of paginatedPokemon"
-      (click)="viewDetails(pokemon)"
+      [class.selected]="selectedPokemon?.name === pokemon.name"
+      (click)="selectPokemon(pokemon)"
     >
       <img [src]="pokemon.image" [alt]="pokemon.name" class="pokemon-image">
       <div class="pokemon-info">
@@ -38,6 +39,13 @@
           {{pokemon.element}}
         </span>
       </div>
+      <button 
+        class="select-button"
+        (click)="viewDetails(pokemon, $event)"
+        *ngIf="selectedPokemon?.name === pokemon.name"
+      >
+        View Details
+      </button>
     </div>
   </div>
 

@@ -31,6 +31,7 @@ export class PokemonListComponent implements OnInit {
     'fighting', 'poison', 'ground', 'flying', 'psychic',
     'bug', 'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy'
   ];
+  selectedPokemon: Pokemon | null = null;
 
   constructor(
     private pokemonService: PokemonService,
@@ -114,7 +115,13 @@ export class PokemonListComponent implements OnInit {
     }
   }
 
-  viewDetails(pokemon: Pokemon) {
-    this.router.navigate(['/pokemon', pokemon.id]);
+  viewDetails(pokemon: Pokemon, event: Event) {
+    event.stopPropagation(); // Prevent card click event
+    this.router.navigate(['/pokemon', pokemon.name]);
+  }
+
+  selectPokemon(pokemon: Pokemon) {
+    this.selectedPokemon = this.selectedPokemon?.name === pokemon.name ? null : pokemon;
   }
 }
+

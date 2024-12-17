@@ -7,6 +7,8 @@ import axios, {  } from 'axios'
 export class PokemonService {
 
   private url = 'https://pokeapi.co/api/v2/pokemon';
+  private urlChain = 'https://pokeapi.co/api/v2/evolution-chain';
+  private urlSpecies = 'https://pokeapi.co/api/v2/pokemon-species';
 
   constructor() {
     console.log('PokemonService created');
@@ -19,6 +21,16 @@ export class PokemonService {
 
   async getPokemonDetails(url:string) {
     const response = await axios.get(url);
+    return response.data;
+  }
+
+  async getPokemonEvolutionChain(id:string) {
+    const response = await axios.get(`${this.urlChain}/${id}`);
+    return response.data;
+  }
+
+  async getPokemonSpecies(id: string) {
+    const response = await axios.get(`${this.urlSpecies}/${id}`);
     return response.data;
   }
 }

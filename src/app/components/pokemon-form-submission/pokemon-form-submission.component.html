@@ -1,0 +1,132 @@
+<div class="modal" [class.show]="isOpen">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Purchase Pokemon Card</h2>
+      <button class="close-button" (click)="toggleModal()">&times;</button>
+    </div>
+    
+    <form [formGroup]="purchaseForm" (ngSubmit)="onSubmit()" class="purchase-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input 
+            id="firstName" 
+            type="text" 
+            formControlName="firstName"
+            placeholder="Enter your first name"
+            [class.invalid]="purchaseForm.get('firstName')?.invalid && purchaseForm.get('firstName')?.touched">
+          <div class="error-message" *ngIf="purchaseForm.get('firstName')?.invalid && purchaseForm.get('firstName')?.touched">
+            First name is required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input 
+            id="lastName" 
+            type="text" 
+            formControlName="lastName"
+            placeholder="Enter your last name"
+            [class.invalid]="purchaseForm.get('lastName')?.invalid && purchaseForm.get('lastName')?.touched">
+          <div class="error-message" *ngIf="purchaseForm.get('lastName')?.invalid && purchaseForm.get('lastName')?.touched">
+            Last name is required
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <br />
+        <input 
+          id="email" 
+          type="email" 
+          formControlName="email"
+          placeholder="Enter your email address"
+          [class.invalid]="purchaseForm.get('email')?.invalid && purchaseForm.get('email')?.touched">
+        <div class="error-message" *ngIf="purchaseForm.get('email')?.invalid && purchaseForm.get('email')?.touched">
+          Please enter a valid email address
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Phone Number</label>
+        <div class="phone-input-group">
+          <select 
+            id="countryCode"
+            formControlName="countryCode"
+            [class.invalid]="purchaseForm.get('countryCode')?.invalid && purchaseForm.get('countryCode')?.touched">
+            <option value="">Select Code</option>
+            <option *ngFor="let country of countryCodes" [value]="country.dialCode">
+              {{ country.flag }} {{ country.dialCode }}
+            </option>
+          </select>
+          <input 
+            id="phoneNumber"
+            type="tel"
+            formControlName="phoneNumber"
+            placeholder="Enter your phone number"
+            [class.invalid]="purchaseForm.get('phoneNumber')?.invalid && purchaseForm.get('phoneNumber')?.touched">
+        </div>
+        <div class="error-message" *ngIf="purchaseForm.get('countryCode')?.invalid && purchaseForm.get('countryCode')?.touched">
+          Please select a country code
+        </div>
+        <div class="error-message" *ngIf="purchaseForm.get('phoneNumber')?.invalid && purchaseForm.get('phoneNumber')?.touched">
+          Please enter a valid phone number (10-12 digits)
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="address">Address</label>
+        <br />
+        <textarea 
+          id="address" 
+          formControlName="address"
+          placeholder="Enter your delivery address"
+          [class.invalid]="purchaseForm.get('address')?.invalid && purchaseForm.get('address')?.touched"></textarea>
+        <div class="error-message" *ngIf="purchaseForm.get('address')?.invalid && purchaseForm.get('address')?.touched">
+          Please enter your address
+        </div>
+      </div>
+
+      <div class="form-group pokemon-selection">
+        <label class="section-label">Select Pokemon</label>
+        <div class="pokemon-checkbox-list">
+          <div class="pokemon-option" *ngFor="let pokemon of evolutions">
+            <label class="pokemon-checkbox">
+              <input 
+                type="checkbox"
+                [value]="pokemon.id"
+                (change)="onPokemonSelectionChange($event, pokemon)"
+                [checked]="isSelected(pokemon)">
+              <span class="checkmark"></span>
+              <img [src]="pokemon.sprites.front_default" [alt]="pokemon.name">
+              <span class="pokemon-name">{{ pokemon.name | titlecase }}</span>
+            </label>
+          </div>
+        </div>
+        <div class="error-message" *ngIf="purchaseForm.get('selectedPokemonIds')?.invalid && purchaseForm.get('selectedPokemonIds')?.touched">
+          Please select at least one Pokemon
+        </div>
+      </div>
+
+      <!-- Selected Pokemon Preview -->
+      <div class="selected-pokemon-preview" *ngIf="selectedPokemons.length > 0">
+        <h3>Selected Pokemon ({{ selectedPokemons.length }})</h3>
+        <div class="pokemon-grid">
+          <div class="pokemon-card" *ngFor="let pokemon of selectedPokemons">
+            <div class="card-content">
+              <img [src]="pokemon.sprites.front_default" [alt]="pokemon.name">
+              <p>{{ pokemon.name | titlecase }}</p>
+              <button class="remove-btn" (click)="removePokemon(pokemon)">×</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="cancel-button" (click)="toggleModal()">Cancel</button>
+        <button type="submit" class="submit-button" [disabled]="purchaseForm.invalid">Submit Order</button>
+      </div>
+    </form>
+  </div>
+</div>

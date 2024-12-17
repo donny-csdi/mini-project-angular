@@ -1,0 +1,115 @@
+<div class="submissions-container">
+  <h2>Pokemon Order Submissions</h2>
+
+  <!-- Error Message -->
+  <div class="error-message" *ngIf="error">
+    {{ error }}
+  </div>
+
+  <!-- Loading Spinner -->
+  <div class="loading-spinner" *ngIf="loading">
+    Loading...
+  </div>
+
+  <!-- Submissions List -->
+  <div class="submissions-list" *ngIf="!loading">
+    <table *ngIf="submissions.length > 0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Pokemon</th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let submission of submissions">
+          <td>{{ submission.id }}</td>
+          <td>{{ submission.firstName }} {{ submission.lastName }}</td>
+          <td>{{ submission.email }}</td>
+          <td>{{ submission.pokemonToBuy.join(', ') }}</td>
+          <td>{{ submission.timestamp | date:'medium' }}</td>
+          <td class="actions">
+            <button (click)="selectSubmission(submission)" class="edit-btn">Edit</button>
+            <button (click)="deleteSubmission(submission.id)" class="delete-btn">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="no-data" *ngIf="submissions.length === 0">
+      No submissions found
+    </div>
+  </div>
+
+  <!-- Edit Form -->
+  <div class="edit-form" *ngIf="isEditing && selectedSubmission">
+    <h3>Edit Submission</h3>
+    <form (ngSubmit)="updateSubmission()">
+      <div class="form-group">
+        <label>First Name:</label>
+        <input type="text" [(ngModel)]="selectedSubmission.firstName" name="firstName" required>
+      </div>
+      <div class="form-group">
+        <label>Last Name:</label>
+        <input type="text" [(ngModel)]="selectedSubmission.lastName" name="lastName" required>
+      </div>
+      <div class="form-group">
+        <label>Email:</label>
+        <input type="email" [(ngModel)]="selectedSubmission.email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label>Phone:</label>
+        <div class="phone-group">
+          <input type="text" [(ngModel)]="selectedSubmission.phoneCountryCode" name="phoneCountryCode" required>
+          <input type="text" [(ngModel)]="selectedSubmission.phone" name="phone" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Address:</label>
+        <textarea [(ngModel)]="selectedSubmission.address" name="address" required></textarea>
+      </div>
+
+      <!-- Pokemon Details -->
+      <div class="pokemon-details">
+        <h4>Selected Pokemon:</h4>
+        <div class="pokemon-grid">
+          <div class="pokemon-card" *ngFor="let pokemonName of selectedSubmission.pokemonToBuy">
+            <div class="pokemon-info" *ngIf="pokemonDetails[pokemonName.toLowerCase()]">
+              <img [src]="pokemonDetails[pokemonName.toLowerCase()].sprites.front_default" [alt]="pokemonName">
+              <h5>{{ pokemonName }}</h5>
+              <div class="pokemon-types">
+                <span class="type-badge" *ngFor="let type of pokemonDetails[pokemonName.toLowerCase()].types">
+                  {{ type.type.name }}
+                </span>
+              </div>
+              <div class="stats-container">
+                <div class="stat-bar" *ngFor="let stat of pokemonDetails[pokemonName.toLowerCase()].stats">
+                  <div class="stat-label">{{ stat.stat.name }}</div>
+                  <div class="stat-value">
+                    <div class="stat-fill" 
+                         [style.width]="(stat.base_stat / 150 * 100) + '%'"
+                         [style.background-color]="getStatColor(stat.base_stat)">
+                      {{ stat.base_stat }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="pokemon-loading" *ngIf="!pokemonDetails[pokemonName.toLowerCase()]">
+              Loading Pokemon details...
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="save-btn" [disabled]="loading">
+          {{ loading ? 'Saving...' : 'Save Changes' }}
+        </button>
+        <button type="button" (click)="cancelEdit()" class="cancel-btn" [disabled]="loading">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
