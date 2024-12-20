@@ -7,14 +7,37 @@ import { firstValueFrom } from 'rxjs';
   providedIn: 'root',
 })
 export class RealtimeDatabaseService {
-  private databaseUrl = `${environment.firebaseDatabaseUrl}/formSubmissions`;
+  private databaseUrl = `${environment.firebase.databaseURL}/formSubmissions`;
+  private usersDatabaseUrl = environment.firebase.databaseURL;
 
   constructor(private http: HttpClient) {}
+
+  async saveUser(uid: string, data: any): Promise<void> {
+    try {
+      await firstValueFrom(
+        this.http.put(`${this.usersDatabaseUrl}/users/${uid}.json`, data)
+      );
+    } catch (error) {
+      console.error('Error saving user data:', error);
+      throw error;
+    }
+  }
+
+  async saveOrder(orderData: any): Promise<void> {
+    try {
+      const orderId = Date.now().toString(); // Generate a unique ID based on timestamp
+      await firstValueFrom(
+        this.http.put(`${this.usersDatabaseUrl}/orders/${orderId}.json`, orderData)
+      );
+    } catch (error) {
+      console.error('Error saving order:', error);
+      throw error;
+    }
+  }
 
   async saveFormSubmission(data: any): Promise<void> {
     try {
       await firstValueFrom(this.http.post(`${this.databaseUrl}.json`, data));
-      console.log('Form submission saved successfully!');
     } catch (error) {
       console.error('Error saving form submission:', error);
       throw error;
@@ -50,7 +73,6 @@ export class RealtimeDatabaseService {
       await firstValueFrom(
         this.http.put(`${this.databaseUrl}/${id}.json`, data)
       );
-      console.log('Form submission updated successfully!');
     } catch (error) {
       console.error('Error updating form submission:', error);
       throw error;
@@ -60,7 +82,6 @@ export class RealtimeDatabaseService {
   async deleteFormSubmission(id: string): Promise<void> {
     try {
       await firstValueFrom(this.http.delete(`${this.databaseUrl}/${id}.json`));
-      console.log('Form submission deleted successfully!');
     } catch (error) {
       console.error('Error deleting form submission:', error);
       throw error;

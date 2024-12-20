@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PokemonService } from '../../services/pokemon.service';
+import { Store } from '@ngrx/store';
+import * as CartActions from '../../store/cart/cart.actions';
+import { selectIsInCart, selectCartItems } from '../../store/cart/cart.selectors';
+import { Observable } from 'rxjs';
 
 interface PokemonEvolution {
   species: {
@@ -21,6 +25,7 @@ interface PokemonDetail {
   };
   sprites: {
     front_default: string;
+    back_default: string;
   };
   types: Array<{
     type: {
@@ -41,6 +46,7 @@ interface PokemonDetail {
   templateUrl: './pokemon-detail.component.html',
   styleUrls: ['./pokemon-detail.component.scss'],
 })
+
 export class PokemonDetailComponent implements OnInit {
   pokemon: PokemonDetail | null = null;
   evolutionChain: PokemonEvolution | null = null;
@@ -53,18 +59,30 @@ export class PokemonDetailComponent implements OnInit {
   isEvolvedDisable: boolean = true;
   showPurchaseForm: boolean = false;
   evolutions: any[] = [];
+  cartQuantity: number = 0;
+  isInCart: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private pokemonService: PokemonService
+    private pokemonService: PokemonService,
+    private store: Store
   ) { }
 
-  ngOnInit(): void {
-    this.route.params.subscribe((params) => {
-      const name = params['id'];
-      this.loadPokemonDetails(name);
-      this.loadEvolvedPokemonList(name);
+  ngOnInit() {
+    this.route.params.subscribe(params => {
+      if (params['id']) {
+        this.loadPokemonDetails(params['id']);
+        this.loadEvolvedPokemonList(params['id']);
+      }
+    });
+
+    // Subscribe to cart state to check current quantity
+    this.store.select(selectCartItems).subscribe(items => {
+      if (this.pokemon) {
+        const cartItem = items.find(item => item.id === this.pokemon?.id);
+        this.cartQuantity = cartItem ? cartItem.quantity : 0;
+      }
     });
   }
 
@@ -75,6 +93,13 @@ export class PokemonDetailComponent implements OnInit {
       const pokemonUrl = `https://pokeapi.co/api/v2/pokemon/${name}`;
       const details = await this.pokemonService.getPokemonDetails(pokemonUrl);
       this.pokemon = details;
+      
+      // Check cart status after pokemon is loaded
+      if (this.pokemon) {
+        this.store.select(selectIsInCart(this.pokemon.id)).subscribe(isInCart => {
+          this.isInCart = isInCart;
+        });
+      }
     } catch (error) {
       console.error('Error loading pokemon details:', error);
       this.error = 'Failed to load Pokemon details';
@@ -93,6 +118,7 @@ export class PokemonDetailComponent implements OnInit {
       
       this.evolutionChain = pokemonEvolution.chain;
       this.evolutionList = this.extractEvolutionChain(this.evolutionChain);
+      this.listOfEvolvedPokemon = [...this.evolutionList];
       
       // Load evolution details
       this.evolutions = await Promise.all(
@@ -184,5 +210,31 @@ export class PokemonDetailComponent implements OnInit {
 
   togglePurchaseForm() {
     this.showPurchaseForm = !this.showPurchaseForm;
+  }
+
+  incrementQuantity() {
+    this.cartQuantity++;
+  }
+
+  decrementQuantity() {
+    if (this.cartQuantity > 0) {
+      this.cartQuantity--;
+    }
+  }
+
+  addToCart() {
+    if (!this.pokemon) return;
+
+    this.store.dispatch(CartActions.addToCart({ 
+      item: {
+        id: this.pokemon.id,
+        name: this.pokemon.name,
+        price: 10, // You can set your own price logic
+        quantity: 1,
+        imageUrl: this.pokemon.sprites.front_default
+      }
+    }));
+    
+    this.cartQuantity++;
   }
 }

@@ -1,11 +1,11 @@
-<div class="modal" [class.show]="isOpen">
+<!-- <div class="modal" [class.show]="isOpen">
   <div class="modal-content">
     <div class="modal-header">
       <h2>Purchase Pokemon Card</h2>
       <button class="close-button" (click)="toggleModal()">&times;</button>
     </div>
     
-    <form [formGroup]="purchaseForm" (ngSubmit)="onSubmit()" class="purchase-form">
+    <form [formGroup]="submissionForm" (ngSubmit)="onSubmit()" class="purchase-form">
       <div class="form-row">
         <div class="form-group">
           <label for="firstName">First Name</label>
@@ -14,8 +14,8 @@
             type="text" 
             formControlName="firstName"
             placeholder="Enter your first name"
-            [class.invalid]="purchaseForm.get('firstName')?.invalid && purchaseForm.get('firstName')?.touched">
-          <div class="error-message" *ngIf="purchaseForm.get('firstName')?.invalid && purchaseForm.get('firstName')?.touched">
+            [class.invalid]="submissionForm.get('firstName')?.invalid && submissionForm.get('firstName')?.touched">
+          <div class="error-message" *ngIf="submissionForm.get('firstName')?.invalid && submissionForm.get('firstName')?.touched">
             First name is required
           </div>
         </div>
@@ -27,8 +27,8 @@
             type="text" 
             formControlName="lastName"
             placeholder="Enter your last name"
-            [class.invalid]="purchaseForm.get('lastName')?.invalid && purchaseForm.get('lastName')?.touched">
-          <div class="error-message" *ngIf="purchaseForm.get('lastName')?.invalid && purchaseForm.get('lastName')?.touched">
+            [class.invalid]="submissionForm.get('lastName')?.invalid && submissionForm.get('lastName')?.touched">
+          <div class="error-message" *ngIf="submissionForm.get('lastName')?.invalid && submissionForm.get('lastName')?.touched">
             Last name is required
           </div>
         </div>
@@ -42,8 +42,8 @@
           type="email" 
           formControlName="email"
           placeholder="Enter your email address"
-          [class.invalid]="purchaseForm.get('email')?.invalid && purchaseForm.get('email')?.touched">
-        <div class="error-message" *ngIf="purchaseForm.get('email')?.invalid && purchaseForm.get('email')?.touched">
+          [class.invalid]="submissionForm.get('email')?.invalid && submissionForm.get('email')?.touched">
+        <div class="error-message" *ngIf="submissionForm.get('email')?.invalid && submissionForm.get('email')?.touched">
           Please enter a valid email address
         </div>
       </div>
@@ -54,7 +54,7 @@
           <select 
             id="countryCode"
             formControlName="countryCode"
-            [class.invalid]="purchaseForm.get('countryCode')?.invalid && purchaseForm.get('countryCode')?.touched">
+            [class.invalid]="submissionForm.get('countryCode')?.invalid && submissionForm.get('countryCode')?.touched">
             <option value="">Select Code</option>
             <option *ngFor="let country of countryCodes" [value]="country.dialCode">
               {{ country.flag }} {{ country.dialCode }}
@@ -65,12 +65,12 @@
             type="tel"
             formControlName="phoneNumber"
             placeholder="Enter your phone number"
-            [class.invalid]="purchaseForm.get('phoneNumber')?.invalid && purchaseForm.get('phoneNumber')?.touched">
+            [class.invalid]="submissionForm.get('phoneNumber')?.invalid && submissionForm.get('phoneNumber')?.touched">
         </div>
-        <div class="error-message" *ngIf="purchaseForm.get('countryCode')?.invalid && purchaseForm.get('countryCode')?.touched">
+        <div class="error-message" *ngIf="submissionForm.get('countryCode')?.invalid && submissionForm.get('countryCode')?.touched">
           Please select a country code
         </div>
-        <div class="error-message" *ngIf="purchaseForm.get('phoneNumber')?.invalid && purchaseForm.get('phoneNumber')?.touched">
+        <div class="error-message" *ngIf="submissionForm.get('phoneNumber')?.invalid && submissionForm.get('phoneNumber')?.touched">
           Please enter a valid phone number (10-12 digits)
         </div>
       </div>
@@ -82,8 +82,8 @@
           id="address" 
           formControlName="address"
           placeholder="Enter your delivery address"
-          [class.invalid]="purchaseForm.get('address')?.invalid && purchaseForm.get('address')?.touched"></textarea>
-        <div class="error-message" *ngIf="purchaseForm.get('address')?.invalid && purchaseForm.get('address')?.touched">
+          [class.invalid]="submissionForm.get('address')?.invalid && submissionForm.get('address')?.touched"></textarea>
+        <div class="error-message" *ngIf="submissionForm.get('address')?.invalid && submissionForm.get('address')?.touched">
           Please enter your address
         </div>
       </div>
@@ -104,13 +104,13 @@
             </label>
           </div>
         </div>
-        <div class="error-message" *ngIf="purchaseForm.get('selectedPokemonIds')?.invalid && purchaseForm.get('selectedPokemonIds')?.touched">
+        <div class="error-message" *ngIf="submissionForm.get('selectedPokemonIds')?.invalid && submissionForm.get('selectedPokemonIds')?.touched">
           Please select at least one Pokemon
         </div>
       </div>
 
-      <!-- Selected Pokemon Preview -->
-      <div class="selected-pokemon-preview" *ngIf="selectedPokemons.length > 0">
+      Selected Pokemon Preview -->
+      <!-- <div class="selected-pokemon-preview" *ngIf="selectedPokemons.length > 0">
         <h3>Selected Pokemon ({{ selectedPokemons.length }})</h3>
         <div class="pokemon-grid">
           <div class="pokemon-card" *ngFor="let pokemon of selectedPokemons">
@@ -125,8 +125,8 @@
 
       <div class="form-actions">
         <button type="button" class="cancel-button" (click)="toggleModal()">Cancel</button>
-        <button type="submit" class="submit-button" [disabled]="purchaseForm.invalid">Submit Order</button>
+        <button type="submit" class="submit-button" [disabled]="submissionForm.invalid">Submit Order</button>
       </div>
     </form>
   </div>
-</div>
+</div> -->

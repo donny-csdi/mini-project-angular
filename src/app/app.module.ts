@@ -2,43 +2,54 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import { PokemonListComponent } from './components/pokemon-list/pokemon-list.component';
-import { PokemonDetailComponent } from './components/pokemon-detail/pokemon-detail.component';
-import { PokemonFormSubmissionComponent } from './components/pokemon-form-submission/pokemon-form-submission.component';
-import { AngularFireModule } from '@angular/fire/compat';
-import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { SubmissionsComponent } from './components/submissions/submissions.component';
-
-const firebaseConfig = {
-  // Replace with your Firebase configuration
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  databaseURL: "YOUR_DATABASE_URL",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
-};
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { environment } from '../environments/environment';
+import { getAuth, provideAuth } from '@angular/fire/auth';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { LoginComponent } from './components/auth/login/login.component';
+import { RegisterComponent } from './components/auth/register/register.component';
+import { provideHttpClient, withFetch } from '@angular/common/http';
+import { PokemonModule } from './components/pokemon/pokemon.module';
+import { StoreModule } from '@ngrx/store';
+import { CartComponent } from './components/cart/cart.component';
+import { cartReducer } from './store/cart/cart.reducer';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { AuthLayoutModule } from './components/layouts/auth-layout/auth-layout.module';
+import { CheckoutComponent } from './components/checkout/checkout.component';
+import { CheckoutSuccessComponent } from './components/checkout-success/checkout-success.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PokemonListComponent,
-    PokemonDetailComponent,
-    PokemonFormSubmissionComponent,
-    SubmissionsComponent
+    SubmissionsComponent,
+    LoginComponent,
+    RegisterComponent,
+    CartComponent,
+    CheckoutComponent,
+    CheckoutSuccessComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    PokemonModule,
+    AuthLayoutModule,
+    StoreModule.forRoot({ cart: cartReducer }),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production
+    }),
   ],
-  providers: [],
+  providers: [
+    provideHttpClient(withFetch()),
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore())
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

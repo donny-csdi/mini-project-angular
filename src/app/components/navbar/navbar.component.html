@@ -1,0 +1,24 @@
+<nav class="nav-bar">
+  <img src="/pokemon-logo.png" alt="Pokemon Logo" class="pokemon-logo">
+  <h1 class="app-title" routerLink="/">Pokemon Store</h1>
+  <div class="nav-items">
+
+    <div class="nav-links">
+      <a routerLink="/pokemon" routerLinkActive="active">Pokemon List</a>
+    </div>
+    <div class="nav-links">
+      <a routerLink="/submissions" routerLinkActive="active">Submissions</a>
+    </div>
+    <div class="nav-links">
+      <a routerLink="/cart" routerLinkActive="active">
+        Cart
+        <span class="cart-count" *ngIf="cartItemsCount$ | async as count">
+          ({{ count }})
+        </span>
+      </a>
+    </div>
+    <div class="nav-links">
+      <button (click)="logout()" class="logout-btn">Logout</button>
+    </div>
+  </div>
+</nav>

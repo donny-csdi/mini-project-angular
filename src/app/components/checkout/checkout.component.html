@@ -1,0 +1,91 @@
+<div class="checkout-container">
+  <h2>Checkout</h2>
+
+  <div class="loading-spinner" *ngIf="loading">
+    Loading Pokemon evolutions...
+  </div>
+
+  <div class="error-message" *ngIf="error">
+    {{ error }}
+  </div>
+
+  <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()" *ngIf="!loading">
+    <div class="form-section personal-info">
+      <h3>Personal Information</h3>
+      
+      <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input id="firstName" type="text" formControlName="firstName">
+        <div class="error-message" *ngIf="checkoutForm.get('firstName')?.touched && checkoutForm.get('firstName')?.errors?.['required']">
+          First name is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input id="lastName" type="text" formControlName="lastName">
+        <div class="error-message" *ngIf="checkoutForm.get('lastName')?.touched && checkoutForm.get('lastName')?.errors?.['required']">
+          Last name is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" type="email" formControlName="email">
+        <div class="error-message" *ngIf="checkoutForm.get('email')?.touched && checkoutForm.get('email')?.errors?.['required']">
+          Email is required
+        </div>
+        <div class="error-message" *ngIf="checkoutForm.get('email')?.touched && checkoutForm.get('email')?.errors?.['email']">
+          Please enter a valid email
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Phone</label>
+        <input id="phone" type="tel" formControlName="phone">
+        <div class="error-message" *ngIf="checkoutForm.get('phone')?.touched && checkoutForm.get('phone')?.errors?.['required']">
+          Phone number is required
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="address">Address</label>
+        <textarea id="address" formControlName="address"></textarea>
+        <div class="error-message" *ngIf="checkoutForm.get('address')?.touched && checkoutForm.get('address')?.errors?.['required']">
+          Address is required
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section pokemon-selections">
+      <h3>Pokemon Selections</h3>
+      <p class="info-text">Please select the variant for each Pokemon you're purchasing</p>
+
+      <div formArrayName="pokemonSelections">
+        <div *ngFor="let selection of pokemonSelections.controls; let i = index" 
+             [formGroupName]="i" 
+             class="pokemon-selection">
+          <div class="selection-group">
+            <label>Pokemon {{i + 1}}</label>
+            <select formControlName="selectedVariant">
+              <option value="">Select a variant</option>
+              <option *ngFor="let evolution of getEvolutionsForPokemon(selection.get('pokemonId')?.value)"
+                      [value]="evolution">
+                {{ evolution | titlecase }}
+              </option>
+            </select>
+            <div class="error-message" *ngIf="selection.get('selectedVariant')?.touched && selection.get('selectedVariant')?.errors?.['required']">
+              Please select a variant
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="!checkoutForm.valid || loading">
+        Complete Purchase
+      </button>
+    </div>
+  </form>
+</div>

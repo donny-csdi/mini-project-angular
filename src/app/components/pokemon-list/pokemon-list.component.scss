@@ -121,7 +121,7 @@ $element-colors: (
         transition: background-color 0.3s;
 
         &:hover {
-          background-color: darken(#4CAF50, 10%);
+          background-color: (#4CAF50, 10%);
         }
       }
 
@@ -185,7 +185,7 @@ $element-colors: (
     font-size: 14px;
 
     &:hover:not(:disabled) {
-      background-color: darken(#3498db, 10%);
+      background-color: (#3498db, 10%);
       transform: translateY(-2px);
     }
 

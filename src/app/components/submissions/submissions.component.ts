@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RealtimeDatabaseService } from '../../services/realtime-database.service';
 import { HttpClient } from '@angular/common/http';
+import { CanComponentDeactivate } from '../../guards/can-deactivate.guard';
 
 interface PokemonDetails {
   name: string;
@@ -38,14 +39,36 @@ interface Submission {
   templateUrl: './submissions.component.html',
   styleUrls: ['./submissions.component.scss']
 })
-export class SubmissionsComponent implements OnInit {
+export class SubmissionsComponent implements OnInit, CanComponentDeactivate {
   submissions: Submission[] = [];
-  selectedSubmission: Submission | null = null;
+  private _selectedSubmission: Submission | null = null;
   pokemonDetails: { [key: string]: PokemonDetails } = {};
   isEditing = false;
   loading = true;
   error: string | null = null;
   successMessage: string | null = null;
+  isFormDirty: boolean = false;
+
+  get selectedSubmission(): Submission {
+    if (!this._selectedSubmission) {
+      return {
+        id: '',
+        firstName: '',
+        lastName: '',
+        email: '',
+        phoneCountryCode: '',
+        phone: '',
+        pokemonToBuy: [],
+        address: '',
+        timestamp: new Date().toISOString()
+      };
+    }
+    return this._selectedSubmission;
+  }
+
+  set selectedSubmission(value: Submission | null) {
+    this._selectedSubmission = value;
+  }
 
   constructor(
     private realtimeDb: RealtimeDatabaseService,
@@ -110,7 +133,6 @@ export class SubmissionsComponent implements OnInit {
         timestamp: freshData.timestamp || new Date().toISOString()
       };
 
-      // Load Pokemon details
       await this.loadPokemonDetails(this.selectedSubmission.pokemonToBuy);
       this.isEditing = true;
     } catch (error) {
@@ -193,6 +215,7 @@ export class SubmissionsComponent implements OnInit {
       }
     }
   }
+  
 
   cancelEdit() {
     this.selectedSubmission = null;
@@ -200,5 +223,16 @@ export class SubmissionsComponent implements OnInit {
     this.error = null;
     this.successMessage = null;
     this.pokemonDetails = {};
+  }
+
+  onFormChange() {
+    this.isFormDirty = true;
+  }
+
+  canDeactivate () {
+    if(this.isFormDirty) {
+      return confirm('You have unsaved changes. Are you sure you want to leave?');
+    }
+    return true;
   }
 }
