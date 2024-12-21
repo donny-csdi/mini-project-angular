@@ -14,7 +14,7 @@ export class CvService {
         phone: '+12-3456-7890',
         email: 'test@example.com',
       },
-      techStack: ['HTML', 'CSS', 'JavaScript', 'TypeScript' , 'Angular']
+
     }
   }
 

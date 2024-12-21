@@ -98,6 +98,65 @@
   font-size: 0.9rem;
 }
 
+.pokemon-evolution-container {
+  margin-bottom: 30px;
+
+  h4 {
+    margin-bottom: 15px;
+    color: #2c3e50;
+  }
+}
+
+.evolution-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.evolution-item {
+  .evolution-checkbox {
+    display: block;
+    cursor: pointer;
+    
+    input[type="checkbox"] {
+      display: none;
+      
+      &:checked + .evolution-content {
+        border-color: #007bff;
+        background-color: rgba(0, 123, 255, 0.1);
+      }
+    }
+  }
+
+  .evolution-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      border-color: #007bff;
+    }
+
+    img {
+      width: 96px;
+      height: 96px;
+      object-fit: contain;
+      margin-bottom: 8px;
+    }
+
+    span {
+      font-size: 14px;
+      text-align: center;
+      color: #333;
+    }
+  }
+}
+
 .form-actions {
   margin-top: 30px;
   text-align: center;

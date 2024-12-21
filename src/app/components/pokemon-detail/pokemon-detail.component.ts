@@ -5,40 +5,8 @@ import { Store } from '@ngrx/store';
 import * as CartActions from '../../store/cart/cart.actions';
 import { selectIsInCart, selectCartItems } from '../../store/cart/cart.selectors';
 import { Observable } from 'rxjs';
-
-interface PokemonEvolution {
-  species: {
-    name: string;
-    url: string;
-  };
-  evolves_to: PokemonEvolution[];
-}
-
-interface PokemonDetail {
-  id: number;
-  name: string;
-  height: number;
-  weight: number;
-  cries: {
-    latest: string
-    legacy: string
-  };
-  sprites: {
-    front_default: string;
-    back_default: string;
-  };
-  types: Array<{
-    type: {
-      name: string;
-    };
-  }>;
-  stats: Array<{
-    base_stat: number;
-    stat: {
-      name: string;
-    };
-  }>;
-}
+import { firstValueFrom } from 'rxjs';
+import { PokemonDetail, PokemonEvolution } from '../../interfaces/pokemon.interface';
 
 @Component({
   selector: 'app-pokemon-detail', 
@@ -86,23 +54,21 @@ export class PokemonDetailComponent implements OnInit {
     });
   }
 
-  private async loadPokemonDetails(name: string) {
+  async loadPokemonDetails(name: string) {
     try {
       this.loading = true;
       
       const pokemonUrl = `https://pokeapi.co/api/v2/pokemon/${name}`;
-      const details = await this.pokemonService.getPokemonDetails(pokemonUrl);
-      this.pokemon = details;
+      this.pokemon = await this.pokemonService.getPokemonDetails(pokemonUrl);
       
       // Check cart status after pokemon is loaded
       if (this.pokemon) {
-        this.store.select(selectIsInCart(this.pokemon.id)).subscribe(isInCart => {
-          this.isInCart = isInCart;
-        });
+        const isInCart = await firstValueFrom(this.store.select(selectIsInCart(this.pokemon.id)));
+        this.isInCart = isInCart;
       }
     } catch (error) {
-      console.error('Error loading pokemon details:', error);
-      this.error = 'Failed to load Pokemon details';
+      this.error = 'Error loading Pokemon details';
+      console.error('Error:', error);
     } finally {
       this.loading = false;
     }
@@ -112,19 +78,18 @@ export class PokemonDetailComponent implements OnInit {
     try {
       this.loading = true;
 
-      const pokemonSpecies = await this.pokemonService.getPokemonSpecies(name as string);
-      const evolutionChainId = pokemonSpecies.evolution_chain.url.split('/').slice(-2, -1)[0];
-      const pokemonEvolution = await this.pokemonService.getPokemonEvolutionChain(evolutionChainId);
+      const pokemonSpecies = await this.pokemonService.getPokemonSpecies(name);
+      const evolutionChainId = pokemonSpecies.evolution_chain.url;
+      const evolutions = await this.pokemonService.getPokemonEvolutionChain(evolutionChainId);
       
-      this.evolutionChain = pokemonEvolution.chain;
-      this.evolutionList = this.extractEvolutionChain(this.evolutionChain);
+      this.evolutions = evolutions;
+      this.evolutionList = evolutions.map(evo => evo.name);
       this.listOfEvolvedPokemon = [...this.evolutionList];
       
       // Load evolution details
       this.evolutions = await Promise.all(
         this.evolutionList.map(async (name) => {
-          const details = await this.pokemonService.getPokemonDetails(`https://pokeapi.co/api/v2/pokemon/${name}`);
-          return details;
+          return await this.pokemonService.getPokemonByName(name);
         })
       );
       
@@ -158,16 +123,21 @@ export class PokemonDetailComponent implements OnInit {
     return names;
   }
 
-  private async loadPokemonDetailsByName(name: string) {
+  async loadPokemonDetailsByName(name: string) {
     try {
       this.loading = true;
+      
       const pokemonUrl = `https://pokeapi.co/api/v2/pokemon/${name}`;
       const details = await this.pokemonService.getPokemonDetails(pokemonUrl);
       this.pokemon = details;
+      // Check cart status after pokemon is loaded
+      if (this.pokemon) {
+        const isInCart = await firstValueFrom(this.store.select(selectIsInCart(this.pokemon.id)));
+        this.isInCart = isInCart;
+      }
     } catch (error) {
-      console.error('Error loading pokemon details:', error);
       this.error = 'Failed to load Pokemon details';
-    } finally {
+      console.error('Error:', error);
       this.loading = false;
     }
   }
@@ -229,7 +199,7 @@ export class PokemonDetailComponent implements OnInit {
       item: {
         id: this.pokemon.id,
         name: this.pokemon.name,
-        price: 10, // You can set your own price logic
+        price: 10,
         quantity: 1,
         imageUrl: this.pokemon.sprites.front_default
       }

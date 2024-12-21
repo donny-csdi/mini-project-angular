@@ -16,7 +16,10 @@ const routes: Routes = [
   },
   {
     path: ':id',
-    component: PokemonDetailComponent
+    component: PokemonDetailComponent,
+    data: {
+      renderMode: 'dynamic'
+    }
   }
 ];
 

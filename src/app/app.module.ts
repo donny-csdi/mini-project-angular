@@ -20,6 +20,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AuthLayoutModule } from './components/layouts/auth-layout/auth-layout.module';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { CheckoutSuccessComponent } from './components/checkout-success/checkout-success.component';
+import { EditSubmissionComponent } from './components/edit-submission/edit-submission.component';
+import { CvModule } from './components/cv/cv.module';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,7 @@ import { CheckoutSuccessComponent } from './components/checkout-success/checkout
     RegisterComponent,
     CartComponent,
     CheckoutComponent,
+    EditSubmissionComponent,
     CheckoutSuccessComponent
   ],
   imports: [
@@ -37,6 +40,7 @@ import { CheckoutSuccessComponent } from './components/checkout-success/checkout
     FormsModule,
     ReactiveFormsModule,
     PokemonModule,
+    CvModule,
     AuthLayoutModule,
     StoreModule.forRoot({ cart: cartReducer }),
     StoreDevtoolsModule.instrument({

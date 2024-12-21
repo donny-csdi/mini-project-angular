@@ -1,13 +1,16 @@
 {
   "name": "mini-project",
   "version": "0.0.0",
-  "scripts": {
+ "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:aot": "ng build --aot",
+    "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:mini-project": "node dist/mini-project/server/server.mjs"
+    "serve:ssr:training": "node dist/training/server/server.mjs",
+    "start:http": "lite-server --baseDir=\"dist/mini-project/browser\""
   },
   "private": true,
   "dependencies": {

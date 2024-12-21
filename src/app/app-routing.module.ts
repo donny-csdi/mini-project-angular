@@ -11,8 +11,18 @@ import { CanDeactivateGuard } from './guards/can-deactivate.guard';
 import { CartComponent } from './components/cart/cart.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { CheckoutSuccessComponent } from './components/checkout-success/checkout-success.component';
+import { EditSubmissionComponent } from './components/edit-submission/edit-submission.component';
 
 const routes: Routes = [
+
+      {
+        path: 'login',
+        component: LoginComponent
+      },
+      {
+        path: 'register',
+        component: RegisterComponent
+      },
   {
     path: '',
     component: AuthLayoutComponent,
@@ -26,6 +36,13 @@ const routes: Routes = [
         path: 'submissions',
         component: SubmissionsComponent,
         canDeactivate: [CanDeactivateGuard]
+      },
+      {
+        path: 'edit-submission/:id',
+        component: EditSubmissionComponent,
+        data: {
+          renderMode: 'dynamic'
+        }
       },
       {
         path: 'cart',
@@ -45,21 +62,7 @@ const routes: Routes = [
       }
     ]
   },
-  {
-    path: '',
-    canActivate: [publicGuard],
-    children: [
-      {
-        path: 'login',
-        component: LoginComponent
-      },
-      {
-        path: 'register',
-        component: RegisterComponent
-      }
-    ]
-  },
-  { path: '**', redirectTo: '' }
+  // {path: '**', redirectTo: ''}
 ];
 
 @NgModule({

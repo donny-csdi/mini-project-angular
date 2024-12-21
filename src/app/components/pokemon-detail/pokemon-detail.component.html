@@ -78,12 +78,9 @@
 
     <div class="action-buttons">
       <div class="cart-controls">
-        <button class="quantity-btn" (click)="decrementQuantity()" *ngIf="cartQuantity > 0">-</button>
-        <span class="quantity" *ngIf="cartQuantity > 0">{{cartQuantity}}</span>
         <button class="add-to-cart-button" (click)="addToCart()">
-          {{ cartQuantity > 0 ? 'Add More' : 'Add to Cart' }}
+          {{  'Add to Cart' }}
         </button>
-        <button class="quantity-btn" (click)="incrementQuantity()">+</button>
       </div>
     </div>
   </div>

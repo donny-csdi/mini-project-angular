@@ -1,0 +1,95 @@
+<div class="edit-submission-container">
+  <h2>Edit Submission</h2>
+
+  <div class="loading-spinner" *ngIf="loading">
+    Loading submission...
+  </div>
+
+  <div class="error-message" *ngIf="error">
+    {{ error }}
+  </div>
+
+  <form [formGroup]="submissionForm" (ngSubmit)="onSubmit()" *ngIf="!loading">
+    <div class="form-group">
+      <label for="firstName">First Name</label>
+      <input id="firstName" type="text" formControlName="firstName">
+      <div class="error-message" *ngIf="submissionForm.get('firstName')?.touched && submissionForm.get('firstName')?.errors?.['required']">
+        First name is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="lastName">Last Name</label>
+      <input id="lastName" type="text" formControlName="lastName">
+      <div class="error-message" *ngIf="submissionForm.get('lastName')?.touched && submissionForm.get('lastName')?.errors?.['required']">
+        Last name is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input id="email" type="email" formControlName="email">
+      <div class="error-message" *ngIf="submissionForm.get('email')?.touched && submissionForm.get('email')?.errors?.['required']">
+        Email is required
+      </div>
+      <div class="error-message" *ngIf="submissionForm.get('email')?.touched && submissionForm.get('email')?.errors?.['email']">
+        Please enter a valid email
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="phone">Phone</label>
+      <input id="phone" type="tel" formControlName="phone">
+      <div class="error-message" *ngIf="submissionForm.get('phone')?.touched && submissionForm.get('phone')?.errors?.['required']">
+        Phone number is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="address">Address</label>
+      <input id="address" type="text" formControlName="address">
+      <div class="error-message" *ngIf="submissionForm.get('address')?.touched && submissionForm.get('address')?.errors?.['required']">
+        Address is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Selected Pokemon</label>
+      <div class="pokemon-list" *ngIf="submissionForm.get('pokemonToBuy')?.value as pokemon">
+        <div *ngFor="let evolution of pokemon">
+          <div *ngFor="let name of evolution">
+            {{ name | titlecase }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Pokemon Details</label>
+      <div class="pokemon-list">
+        <div class="pokemon-card" *ngFor="let pokemon of selectedPokemonDetails">
+          <img [src]="pokemon.image" [alt]="pokemon.name" class="pokemon-image">
+          <h3 class="pokemon-name">{{ pokemon.name | titlecase }}</h3>
+          <div class="pokemon-types">
+            <span class="type-badge" *ngFor="let type of pokemon.types">{{ type }}</span>
+          </div>
+          <div class="pokemon-stats">
+            <div class="stat" *ngFor="let stat of pokemon.stats">
+              <span class="stat-name">{{ stat.name | titlecase }}:</span>
+              <span class="stat-value">{{ stat.value }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="!submissionForm.valid || loading">
+        Update Submission
+      </button>
+      <button type="button" routerLink="/submissions" [disabled]="loading">
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>

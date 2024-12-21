@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PokemonService } from '../../services/pokemon.service';
+import { firstValueFrom } from 'rxjs';
 
 interface Pokemon {
   name: string;
@@ -24,7 +25,7 @@ export class PokemonListComponent implements OnInit {
   searchTerm: string = '';
   selectedElement: string = '';
   currentPage: number = 1;
-  itemsPerPage: number = 10;
+  itemsPerPage: number = 12;
   totalPages: number = 0;
   elements: string[] = [
     'normal', 'fire', 'water', 'electric', 'grass', 'ice',
@@ -45,10 +46,13 @@ export class PokemonListComponent implements OnInit {
   async fetchPokemons() {
     try {
       this.loading = true;
-      const response = await this.pokemonService.getPokemons();
+      const response = await this.pokemonService.getPokemonList();
       
-      const pokemonData = await Promise.all(response.map(async (pokemon: any) => {
-        const details = await this.pokemonService.getPokemonDetails(pokemon.url);
+      const pokemonData = await Promise.all(
+        response.map(async (pokemon: any) => {
+          const details = await this.pokemonService.getPokemonDetails(
+            pokemon.url
+          );
         return {
           name: pokemon.name,
           url: pokemon.url,
@@ -124,4 +128,3 @@ export class PokemonListComponent implements OnInit {
     this.selectedPokemon = this.selectedPokemon?.name === pokemon.name ? null : pokemon;
   }
 }
-

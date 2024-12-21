@@ -1,8 +1,8 @@
 <div class="cart-container">
   <h2>Shopping Cart</h2>
-  <div class="cart-items" *ngIf="(cartItems$ | async)?.length; else emptyCart">
-    <div class="cart-item" *ngFor="let item of cartItems$ | async">
-      <img [src]="item.imageUrl" [alt]="item.name">
+  <div class="cart-items" *ngIf="(cartItems$ | async)?.length; else emptyCart" >
+    <div class="cart-item" *ngFor="let item of cartItems$ | async" >
+      <img [src]="item.imageUrl" [alt]="item.name" routerLink="/pokemon/{{ item.name }}">
       <div class="item-details">
         <h3>{{ item.name }}</h3>
         <p>Quantity: {{ item.quantity }}</p>

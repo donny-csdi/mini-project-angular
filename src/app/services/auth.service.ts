@@ -102,4 +102,9 @@ export class AuthService {
     const user = sessionStorage.getItem('user');
     return user ? JSON.parse(user) : null;
   }
+
+  getCurrentUserId(): string | null {
+    const user = this.getUser();
+    return user ? user.uid : null;
+  }
 }

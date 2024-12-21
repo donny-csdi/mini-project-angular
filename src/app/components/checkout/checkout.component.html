@@ -50,33 +50,31 @@
 
       <div class="form-group">
         <label for="address">Address</label>
-        <textarea id="address" formControlName="address"></textarea>
+        <input id="address" type="text" formControlName="address">
         <div class="error-message" *ngIf="checkoutForm.get('address')?.touched && checkoutForm.get('address')?.errors?.['required']">
           Address is required
         </div>
       </div>
     </div>
 
-    <div class="form-section pokemon-selections">
-      <h3>Pokemon Selections</h3>
-      <p class="info-text">Please select the variant for each Pokemon you're purchasing</p>
+    <div class="form-section pokemon-selection">
+      <h3>Pokemon Selection</h3>
 
-      <div formArrayName="pokemonSelections">
-        <div *ngFor="let selection of pokemonSelections.controls; let i = index" 
-             [formGroupName]="i" 
-             class="pokemon-selection">
-          <div class="selection-group">
-            <label>Pokemon {{i + 1}}</label>
-            <select formControlName="selectedVariant">
-              <option value="">Select a variant</option>
-              <option *ngFor="let evolution of getEvolutionsForPokemon(selection.get('pokemonId')?.value)"
-                      [value]="evolution">
-                {{ evolution | titlecase }}
-              </option>
-            </select>
-            <div class="error-message" *ngIf="selection.get('selectedVariant')?.touched && selection.get('selectedVariant')?.errors?.['required']">
-              Please select a variant
-            </div>
+      <div *ngIf="!pokemonWithEvolutions.length">No Pokemon evolutions loaded</div>
+
+      <div class="pokemon-evolution-container" *ngFor="let pokemon of pokemonWithEvolutions; let i = index">
+        <h4>Pokemon #{{i + 1}}:</h4>
+        <div class="evolution-grid">
+          <div class="evolution-item" *ngFor="let evolution of pokemon.evolutions">
+            <label class="evolution-checkbox">
+              <input type="checkbox" 
+                     [checked]="evolution.selected"
+                     (change)="toggleEvolution(pokemon.cartItemId, evolution.name)">
+              <div class="evolution-content">
+                <img [src]="evolution.imageUrl" [alt]="evolution.name">
+                <span>{{ evolution.name | titlecase }}</span>
+              </div>
+            </label>
           </div>
         </div>
       </div>
