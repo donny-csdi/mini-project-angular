@@ -223,6 +223,160 @@ $element-colors: (
   100% { transform: rotate(360deg); }
 }
 
+.container {
+  .plyr--video {
+    .plyr__control--overlaid {
+      background: none;
+      border: none;
+      padding: 0;
+      
+      svg {
+        display: none;
+      }
+      
+      &::after {
+        content: '';
+        display: block;
+        width: 83px;
+        height: 84px;
+        background-image: url('data:image/svg+xml;utf8,<svg width="83" height="84" viewBox="0 0 83 84" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M41.5859 83.25C64.3677 83.25 82.8359 64.7817 82.8359 42C82.8359 19.2183 64.3677 0.75 41.5859 0.75C18.8042 0.75 0.335938 19.2183 0.335938 42C0.335938 64.7817 18.8042 83.25 41.5859 83.25ZM32.877 22.4072C32.0017 21.8776 30.9116 21.8637 30.0233 22.3709C29.135 22.878 28.5859 23.8278 28.5859 24.8571L28.5859 59.1429C28.5859 60.1722 29.135 61.122 30.0233 61.6291C30.9116 62.1363 32.0017 62.1224 32.877 61.5928L61.2103 44.45C62.0638 43.9336 62.5859 43.0036 62.5859 42C62.5859 40.9964 62.0638 40.0664 61.2103 39.55L32.877 22.4072Z" fill="%23FEFEFE"/></svg>');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+      
+      &:hover {
+        background: none;
+        transform: scale(1.1);
+      }
+    }
+  }
+}
+
+.date-range-container {
+  background-color: #fff;
+  border-radius: $border-radius;
+  padding: 20px;
+  box-shadow: $card-shadow;
+  margin: 20px 0;
+
+  p {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 15px;
+    font-weight: 500;
+  }
+
+  .date-picker-wrapper {
+    .form-control {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e9ecef;
+      border-radius: $border-radius;
+      font-size: 14px;
+      color: #495057;
+      transition: all $transition-speed ease;
+      
+      &:focus {
+        outline: none;
+        border-color: #6890F0;
+        box-shadow: 0 0 0 0.2rem rgba(104, 144, 240, 0.25);
+      }
+
+      &::placeholder {
+        color: #adb5bd;
+      }
+    }
+  }
+}
+
+::ng-deep {
+  .daterangepicker {
+    border-radius: $border-radius;
+    border: 1px solid rgba(0,0,0,.15);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+    font-family: inherit;
+    
+    .ranges {
+      ul {
+        li {
+          padding: 8px 12px;
+          
+          &:hover {
+            background-color: rgba(104, 144, 240, 0.1);
+          }
+          
+          &.active {
+            background-color: #6890F0;
+            color: white;
+          }
+        }
+      }
+    }
+    
+    .calendar-table {
+      .table-condensed {
+        thead {
+          tr {
+            th {
+              &.prev, &.next {
+                &:hover {
+                  background-color: rgba(104, 144, 240, 0.1);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    td {
+      &.active, &.active:hover {
+        background-color: #6890F0;
+        
+        &:hover {
+          background-color: darken(#6890F0, 10%);
+        }
+      }
+      
+      &.in-range {
+        background-color: rgba(104, 144, 240, 0.1);
+        color: #495057;
+        
+        &:hover {
+          background-color: rgba(104, 144, 240, 0.2);
+        }
+      }
+      
+      &:hover {
+        background-color: rgba(104, 144, 240, 0.1);
+      }
+    }
+    
+    .btn {
+      &.btn-primary {
+        background-color: #6890F0;
+        border-color: #6890F0;
+        
+        &:hover {
+          background-color: darken(#6890F0, 10%);
+          border-color: darken(#6890F0, 10%);
+        }
+      }
+      
+      &.btn-default {
+        color: #6c757d;
+        border-color: #6c757d;
+        
+        &:hover {
+          background-color: #6c757d;
+          color: white;
+        }
+      }
+    }
+  }
+}
+
 // Responsive design
 @media (max-width: 768px) {
   .pokemon-grid {

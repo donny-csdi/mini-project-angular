@@ -5,7 +5,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from '@angular/fire/auth';
-import { RealtimeDatabaseService } from './realtime-database.service';
+// import { RealtimeDatabaseService } from './realtime-database.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +14,7 @@ export class AuthService {
   private auth: Auth = inject(Auth);
 
   constructor(
-    private realtimeDatabaseService: RealtimeDatabaseService,
+    // private realtimeDatabaseService: RealtimeDatabaseService,
     private ngZone: NgZone
   ) {}
 
@@ -65,10 +65,10 @@ export class AuthService {
         registeredAt: new Date().toISOString(),
       };
 
-      await this.realtimeDatabaseService.saveUser(
-        userCredential.user.uid,
-        userData
-      );
+      // await this.realtimeDatabaseService.saveUser(
+      //   userCredential.user.uid,
+      //   userData
+      // );
 
       if (this.isSessionStorageAvailable()) {
         sessionStorage.setItem('user', JSON.stringify(userData));

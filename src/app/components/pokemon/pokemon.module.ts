@@ -25,16 +25,17 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    PokemonListComponent,
     PokemonDetailComponent,
     PokemonFormSubmissionComponent,
   ],
   imports: [
     CommonModule,
+    RouterModule.forChild(routes),
     FormsModule,
     ReactiveFormsModule,
-    RouterModule.forChild(routes),
-    StoreModule.forFeature('cart', cartReducer),
-  ]
+    PokemonListComponent,
+    StoreModule.forFeature('cart', cartReducer)
+  ],
+  exports: [RouterModule]
 })
 export class PokemonModule { }

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
@@ -22,6 +23,7 @@ import { CheckoutComponent } from './components/checkout/checkout.component';
 import { CheckoutSuccessComponent } from './components/checkout-success/checkout-success.component';
 import { EditSubmissionComponent } from './components/edit-submission/edit-submission.component';
 import { CvModule } from './components/cv/cv.module';
+import { NgxDaterangepickerBootstrapModule, NgxDaterangepickerLocaleService } from 'ngx-daterangepicker-bootstrap';
 
 @NgModule({
   declarations: [
@@ -36,6 +38,7 @@ import { CvModule } from './components/cv/cv.module';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
@@ -47,12 +50,14 @@ import { CvModule } from './components/cv/cv.module';
       maxAge: 25,
       logOnly: environment.production
     }),
+    NgxDaterangepickerBootstrapModule.forRoot(),
   ],
   providers: [
     provideHttpClient(withFetch()),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
-    provideFirestore(() => getFirestore())
+    provideFirestore(() => getFirestore()),
+    NgxDaterangepickerLocaleService
   ],
   bootstrap: [AppComponent]
 })

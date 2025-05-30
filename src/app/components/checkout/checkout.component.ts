@@ -7,7 +7,7 @@ import { CartItem } from '../../store/cart/cart.model';
 import { Observable, forkJoin, of, throwError } from 'rxjs';
 import { map, switchMap, catchError, timeout, retry, finalize, take } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { RealtimeDatabaseService } from '../../services/realtime-database.service';
+// import { RealtimeDatabaseService } from '../../services/realtime-database.service';
 import { clearCart, addToCart } from '../../store/cart/cart.actions';
 import { AuthService } from '../../services/auth.service';
 import { firstValueFrom } from 'rxjs';
@@ -49,7 +49,7 @@ export class CheckoutComponent implements OnInit {
     private store: Store,
     private pokemonService: PokemonService,
     private router: Router,
-    private realtimeDbService: RealtimeDatabaseService,
+    // private realtimeDbService: RealtimeDatabaseService,
     private authService: AuthService
   ) {
     this.cartItems$ = this.store.select(selectCartItems);
@@ -166,7 +166,7 @@ export class CheckoutComponent implements OnInit {
 
       try {
         this.loading = true;
-        await this.realtimeDbService.saveFormSubmission(submission);
+        // await this.realtimeDbService.saveFormSubmission(submission);
         
         // Clear the cart after successful submission
         this.store.dispatch(clearCart());

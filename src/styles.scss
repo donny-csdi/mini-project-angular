@@ -1,5 +1,53 @@
 /* You can add global styles to this file, and also import other style files */
-
 body {
-    margin: 0 !important
+    margin: 0 !important;
+    --plyr-color-main: #fff !important;
+}
+
+.plyr__control--overlaid {
+    color: transparent !important;
+    background: url('/subtract.png') !important;
+    background-size: contain !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+}
+
+.plyr__video-wrapper {
+  iframe {
+    pointer-events: none !important;
+  }
+  
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+  }
+}
+
+.ytp-watermark .yt-uix-sessionlink {
+    opacity: 0 !important;
+  display: none !important;
+}
+
+.ytp-chrome-top-buttons {
+  display: none !important;
+}
+
+.ytp-button[data-title-no-tooltip="Copy video URL"] {
+  display: none !important;
+}
+
+.ytp-menuitem[role="menuitem"]:has([aria-label="Copy video URL"]) {
+  display: none !important;
+}
+
+// Hide all YouTube context menu items
+.ytp-contextmenu {
+  display: none !important;
 }

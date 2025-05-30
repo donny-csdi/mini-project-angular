@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RealtimeDatabaseService } from '../../services/realtime-database.service';
+// import { RealtimeDatabaseService } from '../../services/realtime-database.service';
 import { Store } from '@ngrx/store';
 import { selectCartItems } from '../../store/cart/cart.selectors';
 import { Observable } from 'rxjs';
@@ -38,7 +38,7 @@ export class PokemonFormSubmissionComponent implements OnInit {
   
   constructor(
     private fb: FormBuilder,
-    private realtimeDB: RealtimeDatabaseService,
+    // private realtimeDB: RealtimeDatabaseService,
     private store: Store
   ) {
     this.cartItems$ = this.store.select(selectCartItems);
@@ -69,11 +69,11 @@ export class PokemonFormSubmissionComponent implements OnInit {
           status: 'pending'
         };
         
-        this.realtimeDB.saveOrder(orderData).then(() => {
-          console.log('Order saved successfully');
-          // Clear cart and redirect to confirmation page
-          // TODO: Implement clear cart action
-        });
+        // this.realtimeDB.saveOrder(orderData).then(() => {
+        //   console.log('Order saved successfully');
+        //   // Clear cart and redirect to confirmation page
+        //   // TODO: Implement clear cart action
+        // });
       });
     }
   }

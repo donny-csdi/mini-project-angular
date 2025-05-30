@@ -26,7 +26,6 @@ const routes: Routes = [
   {
     path: '',
     component: AuthLayoutComponent,
-    canActivate: [authGuard],
     children: [
       {
         path: 'pokemon',

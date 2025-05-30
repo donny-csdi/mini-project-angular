@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RealtimeDatabaseService } from '../../services/realtime-database.service';
+// import { RealtimeDatabaseService } from '../../services/realtime-database.service';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { PokemonService } from '../../services/pokemon.service';
 import { firstValueFrom } from 'rxjs';
@@ -22,7 +22,7 @@ export class EditSubmissionComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private realtimeDbService: RealtimeDatabaseService,
+    // private realtimeDbService: RealtimeDatabaseService,
     private pokemonService: PokemonService,
     private fb: FormBuilder
   ) {
@@ -38,24 +38,24 @@ export class EditSubmissionComponent implements OnInit {
 
   async ngOnInit() {
     this.loading = true;
-    try {
-      this.submissionId = this.route.snapshot.params['id'];
-      const submission = await this.realtimeDbService.getFormSubmission(this.submissionId);
-      if (submission) {
-        this.submissionForm.patchValue(submission);
-        // Always attempt to load Pokemon details if pokemonToBuy exists
-        const pokemonToBuy = submission.pokemonToBuy;
-        console.log('Pokemon to buy:', pokemonToBuy);
-        if (pokemonToBuy) {
-          await this.loadPokemonDetails(Array.isArray(pokemonToBuy) ? pokemonToBuy : [pokemonToBuy]);
-        }
-      }
-    } catch (error) {
-      this.error = 'Error loading submission';
-      console.error('Error:', error);
-    } finally {
-      this.loading = false;
-    }
+    // try {
+    //   this.submissionId = this.route.snapshot.params['id'];
+    //   const submission = await this.realtimeDbService.getFormSubmission(this.submissionId);
+    //   if (submission) {
+    //     this.submissionForm.patchValue(submission);
+    //     // Always attempt to load Pokemon details if pokemonToBuy exists
+    //     const pokemonToBuy = submission.pokemonToBuy;
+    //     console.log('Pokemon to buy:', pokemonToBuy);
+    //     if (pokemonToBuy) {
+    //       await this.loadPokemonDetails(Array.isArray(pokemonToBuy) ? pokemonToBuy : [pokemonToBuy]);
+    //     }
+    //   }
+    // } catch (error) {
+    //   this.error = 'Error loading submission';
+    //   console.error('Error:', error);
+    // } finally {
+    //   this.loading = false;
+    // }
   }
 
   async loadPokemonDetails(pokemonNames: string[]) {
@@ -101,10 +101,10 @@ export class EditSubmissionComponent implements OnInit {
     if (this.submissionForm.valid) {
       try {
         this.loading = true;
-        await this.realtimeDbService.updateFormSubmission(
-          this.submissionId,
-          this.submissionForm.value
-        );
+        // await this.realtimeDbService.updateFormSubmission(
+        //   this.submissionId,
+        //   this.submissionForm.value
+        // );
         this.router.navigate(['/submissions']);
       } catch (error) {
         console.error('Error updating submission:', error);

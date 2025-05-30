@@ -39,9 +39,12 @@
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/plyr/dist/plyr.css"
             ],
-            "scripts": [],
+            "scripts": [
+              "node_modules/plyr/dist/plyr.js"
+            ],
             "server": "src/main.server.ts",
             "outputMode": "server",
             "ssr": {
@@ -103,6 +106,9 @@
               }
             ],
             "styles": [
+              "@primeng/themes/lara-light-blue/theme.css",
+              "node_modules/primeng/resources/primeng.min.css",
+              "node_modules/primeicons/primeicons.css",
               "src/styles.scss"
             ],
             "scripts": []

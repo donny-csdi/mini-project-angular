@@ -15,7 +15,6 @@ export class LoginComponent {
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
     private router: Router
   ) {
     this.loginForm = this.fb.group({
@@ -29,7 +28,6 @@ export class LoginComponent {
       try {
         this.isLoading = true;
         const { email, password } = this.loginForm.value;
-        await this.authService.login(email, password);
         this.router.navigate(['/']);
       } catch (error) {
         console.error('Login error:', error);
