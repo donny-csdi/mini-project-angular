@@ -10,8 +10,19 @@ import { CvService } from '../cv.service';
 export class CvPageComponent {
   public cvData;
   techStack = ['Angular', 'TypeScript', 'HTML', 'CSS']
+  
+  counterStart: number = 0;
+  incrementValue: number = 1;
 
   constructor(private cvService: CvService) { 
     this.cvData = this.cvService.getCvData();
+  }
+  
+  updateCounterStart(value: number): void {
+    this.counterStart = value;
+  }
+  
+  updateIncrementBy(value: number): void {
+    this.incrementValue = value;
   }
 }

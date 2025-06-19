@@ -1,0 +1,14 @@
+<div class="pokemon-card">
+  <div class="favorite-button" [class.is-favorite]="isFavorite" (click)="toggleFavorite()">
+    <i class="heart-icon">❤</i>
+  </div>
+  
+  <div class="pokemon-image">
+    <img [src]="pokemon.image" [alt]="pokemon.name">
+  </div>
+  
+  <div class="pokemon-info">
+    <h4 class="pokemon-name">{{ pokemon.name | titlecase }}</h4>
+    <span class="pokemon-id">#{{ pokemon.id }}</span>
+  </div>
+</div>

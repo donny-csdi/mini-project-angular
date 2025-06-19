@@ -25,9 +25,31 @@
         <div class="tech-stack">
           <h3>Tech Stack</h3>
           <div class="tech-tags">
-            <span class="tech-tag" *ngFor="let tech of techStack">{{ tech }}</span>
+            <span class="tech-tag" *ngFor="let tech of cvData.techStack">{{ tech }}</span>
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Day 2 Demo Components -->
+  <div class="day2-demo-container">
+    
+    <!-- Lifecycle Hooks Demo -->
+    <div class="demo-section">
+      <div class="demo-controls">
+        <button (click)="updateCounterStart(10)" class="demo-button">Set Start to 10</button>
+        <button (click)="updateIncrementBy(2)" class="demo-button">Increment by 2</button>
+        <button (click)="updateIncrementBy(1)" class="demo-button">Increment by 1</button>
+      </div>
+      <app-pokemon-counter
+      [startCount]="counterStart"
+      [incrementBy]="incrementValue">
+      </app-pokemon-counter>
+    </div>
+    
+    <!-- Component Communication Demo -->
+    <div class="demo-section">
+      <app-pokemon-favorites></app-pokemon-favorites>
     </div>
   </div>

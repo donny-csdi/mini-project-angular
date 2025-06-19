@@ -1,0 +1,97 @@
+.pokemon-counter-container {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.counter-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 100%;
+  max-width: 500px;
+  
+  h2 {
+    color: #3498db;
+    margin-top: 0;
+    text-align: center;
+    font-size: 1.8rem;
+  }
+}
+
+.counter-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0;
+  
+  .counter-value {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #e74c3c;
+  }
+  
+  .counter-label {
+    font-size: 1rem;
+    color: #7f8c8d;
+    margin-top: 5px;
+  }
+}
+
+.counter-controls {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  
+  .reset-button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    
+    &:hover {
+      background-color: #2980b9;
+    }
+  }
+}
+
+.lifecycle-hooks {
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  padding: 15px;
+  
+  h3 {
+    margin-top: 0;
+    color: #2c3e50;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+  
+  .hooks-container {
+    max-height: 200px;
+    overflow-y: auto;
+    
+    .hook-item {
+      padding: 8px;
+      border-bottom: 1px solid #ecf0f1;
+      font-family: monospace;
+      font-size: 0.9rem;
+      
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+    
+    .no-hooks {
+      color: #95a5a6;
+      font-style: italic;
+      text-align: center;
+      padding: 10px;
+    }
+  }
+}

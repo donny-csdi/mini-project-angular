@@ -1,0 +1,40 @@
+<div class="pokemon-favorites-container">
+  <h2>Pokemon Favorites Demo</h2>
+  <p class="description">This component demonstrates parent-child communication in Angular</p>
+  
+  <div class="loading-spinner" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading Pokemons...</p>
+  </div>
+  
+  <div class="pokemon-sections" *ngIf="!loading">
+    <div class="available-section">
+      <h3>Available Pokemon</h3>
+      <div class="pokemon-list">
+        <app-pokemon-card 
+          *ngFor="let pokemon of availablePokemons" 
+          [pokemon]="pokemon"
+          [isFavorite]="false"
+          (addToFavorites)="addToFavorites($event)"
+          (removeFromFavorites)="removeFromFavorites($event)">
+        </app-pokemon-card>
+      </div>
+    </div>
+    
+    <div class="favorites-section">
+      <h3>My Favorite Pokemon</h3>
+      <div class="pokemon-list" *ngIf="favoritePokemons.length > 0">
+        <app-pokemon-card 
+          *ngFor="let pokemon of favoritePokemons" 
+          [pokemon]="pokemon"
+          [isFavorite]="true"
+          (addToFavorites)="addToFavorites($event)"
+          (removeFromFavorites)="removeFromFavorites($event)">
+        </app-pokemon-card>
+      </div>
+      <div class="empty-favorites" *ngIf="favoritePokemons.length === 0">
+        <p>No favorite Pokemon yet. Click the heart icon to add some!</p>
+      </div>
+    </div>
+  </div>
+</div>
