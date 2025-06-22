@@ -27,13 +27,13 @@ const routes: Routes = [
   declarations: [
     PokemonDetailComponent,
     PokemonFormSubmissionComponent,
+    PokemonListComponent,
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
     FormsModule,
     ReactiveFormsModule,
-    PokemonListComponent,
     StoreModule.forFeature('cart', cartReducer)
   ],
   exports: [RouterModule]

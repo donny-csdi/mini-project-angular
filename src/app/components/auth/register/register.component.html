@@ -4,19 +4,23 @@
       <img src="/pokemon-logo.png" alt="Pokemon Logo" class="pokemon-logo" />
       <p>Create your new account</p>
     </div>
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <form #registerForm="ngForm" (ngSubmit)="registerForm.form.valid && onSubmit()">
       <div class="form-group">
         <label for="email">Email</label>
         <input
           type="email"
           id="email"
-          formControlName="email"
+          name="email"
+          [(ngModel)]="user.email"
+          #email="ngModel"
+          required
+          email
           placeholder="Enter your email"
-          [ngClass]="{'ng-invalid': registerForm.get('email')?.invalid && registerForm.get('email')?.touched}"
+          [ngClass]="{'ng-invalid': email.invalid && email.touched}"
         />
-        <div class="error-message" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
-          <span *ngIf="registerForm.get('email')?.errors?.['required']">Email is required</span>
-          <span *ngIf="registerForm.get('email')?.errors?.['email']">Please enter a valid email</span>
+        <div class="error-message" *ngIf="email.invalid && email.touched">
+          <span *ngIf="email.errors?.['required']">Email is required</span>
+          <span *ngIf="email.errors?.['email']">Please enter a valid email</span>
         </div>
       </div>
 
@@ -25,13 +29,17 @@
         <input
           type="password"
           id="password"
-          formControlName="password"
+          name="password"
+          [(ngModel)]="user.password"
+          #password="ngModel"
+          required
+          minlength="6"
           placeholder="Enter your password"
-          [ngClass]="{'ng-invalid': registerForm.get('password')?.invalid && registerForm.get('password')?.touched}"
+          [ngClass]="{'ng-invalid': password.invalid && password.touched}"
         />
-        <div class="error-message" *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
-          <span *ngIf="registerForm.get('password')?.errors?.['required']">Password is required</span>
-          <span *ngIf="registerForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters</span>
+        <div class="error-message" *ngIf="password.invalid && password.touched">
+          <span *ngIf="password.errors?.['required']">Password is required</span>
+          <span *ngIf="password.errors?.['minlength']">Password must be at least 6 characters</span>
         </div>
       </div>
 

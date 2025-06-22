@@ -31,9 +31,9 @@ export class PokemonCounterComponent implements OnInit, OnDestroy, OnChanges {
     
     this.counter = this.startCount;
 
-    setInterval(() => {
-      this.counter += this.incrementBy;
-    }, 1000);
+    // setInterval(() => {
+    //   this.counter += this.incrementBy;
+    // }, 1000);
 
     // this.counterSubscription = interval(1000).subscribe(() => {
     //   this.counter += this.incrementBy;

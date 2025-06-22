@@ -1,10 +1,8 @@
-import { Component, OnInit, OnDestroy, PLATFORM_ID, Inject } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
 import { PokemonService } from '../../services/pokemon.service';
-import { firstValueFrom } from 'rxjs';
 import dayjs, { Dayjs } from 'dayjs';
 
 interface Pokemon {
@@ -17,15 +15,11 @@ interface Pokemon {
 
 @Component({
   selector: 'app-pokemon-list',
+  standalone: false,
   templateUrl: './pokemon-list.component.html',
   styleUrls: ['./pokemon-list.component.scss'],
-  standalone: true,
-  imports: [CommonModule, FormsModule]
 })
-export class PokemonListComponent implements OnInit, OnDestroy {
-
-  public currentVideoId: string = 'bTqVqk7FSmY'; // Default video ID
-  private player: any = null;
+export class PokemonListComponent implements OnInit {
 
   pokemons: Pokemon[] = [];
   filteredPokemonList: Pokemon[] = [];
@@ -42,79 +36,14 @@ export class PokemonListComponent implements OnInit, OnDestroy {
     'bug', 'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy'
   ];
   selectedPokemon: Pokemon | null = null;
-  selected: { startDate: Dayjs; endDate: Dayjs } | null = null;
-  ranges: any = {
-    'Today': [dayjs(), dayjs()],
-    'Yesterday': [dayjs().subtract(1, 'days'), dayjs().subtract(1, 'days')],
-    'Last 7 Days': [dayjs().subtract(6, 'days'), dayjs()],
-    'Last 30 Days': [dayjs().subtract(29, 'days'), dayjs()],
-    'This Month': [dayjs().startOf('month'), dayjs().endOf('month')],
-    'Last Month': [
-      dayjs().subtract(1, 'month').startOf('month'),
-      dayjs().subtract(1, 'month').endOf('month')
-    ]
-  };
-  locale: any = {
-    format: 'DD-MM-YYYY',
-    displayFormat: 'DD-MM-YYYY',
-    applyLabel: 'Cari',
-    cancelLabel: 'Reset',
-    fromLabel: 'From',
-    toLabel: 'To',
-    customRangeLabel: 'Custom Range',
-    daysOfWeek: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
-    monthNames: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
-    firstDay: 1
-  };
 
   constructor(
     private router: Router,
     private pokemonService: PokemonService,
-    @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
   ngOnInit(): void {
-    this.initializePlyr();
     this.fetchPokemons();
-  }
-
-  private initializePlyr(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      this.setVideoId('wJO_vIDZn-I')
-      import('plyr').then(({ default: Plyr }) => {
-        this.player = new Plyr('#plyrID', {
-          controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen'],
-          youtube: {
-            noCookie: true,
-            rel: 0,
-            showinfo: 0,
-            iv_load_policy: 3,
-            modestbranding: 1,
-            controls: 0,
-            playsinline: 1
-          },
-          clickToPlay: true
-        });
-
-        // Disable right-click on the entire player container
-        const disableContextMenu = (e: Event) => {
-          e.preventDefault();
-          return false;
-        };
-
-        // Target the container element
-        const container = document.querySelector('.plyr');
-        if (container) {
-          container.addEventListener('contextmenu', disableContextMenu, false);
-        }
-
-        // Also handle the video wrapper
-        const playerElement = document.querySelector('.plyr__video-wrapper');
-        if (playerElement) {
-          playerElement.addEventListener('contextmenu', disableContextMenu, false);
-        }
-      });
-    }
   }
 
   async fetchPokemons() {
@@ -202,37 +131,4 @@ export class PokemonListComponent implements OnInit, OnDestroy {
     this.selectedPokemon = this.selectedPokemon?.name === pokemon.name ? null : pokemon;
   }
 
-  setVideoId(videoId: string): void {
-    this.currentVideoId = videoId;
-    if (this.player) {
-      this.player.source = {
-        type: 'video',
-        sources: [{
-          src: videoId,
-          provider: 'youtube'
-        }]
-      };
-    }
-  }
-
-  searchByDateRange() {
-    if (this.selected?.startDate && this.selected?.endDate) {
-      const startDate = this.selected.startDate.format('YYYY-MM-DD');
-      const endDate = this.selected.endDate.format('YYYY-MM-DD');
-      console.log('Searching with date range:', { startDate, endDate });
-      // Add your date range filtering logic here
-    }
-  }
-
-  resetDateRange() {
-    this.selected = null;
-    // Reset any filtered results
-    this.filteredPokemonList = [...this.pokemons];
-  }
-
-  ngOnDestroy(): void {
-    if (this.player) {
-      this.player.destroy();
-    }
-  }
 }
